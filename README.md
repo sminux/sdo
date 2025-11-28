@@ -14,6 +14,10 @@
 
 ## Git commands
 
+* git init
+* git status
+* git add .
+* git remote add origin git@github.com:sminux/sdo.git
 * git pull
-* git push
+* git push main origin
 * git commit -S -m "номер задачи" -m "описание проделанной работы"
