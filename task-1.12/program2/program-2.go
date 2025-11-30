@@ -14,8 +14,8 @@ import (
 объединяет их содержимое и сохраняет результат в новый файл combined.txt (работать только с текстовыми файлами)
 */
 
-func getTextFiles() ([]string, error) {
-	entries, err := os.ReadDir(".")
+func getTextFiles(path string) ([]string, error) {
+	entries, err := os.ReadDir(path) //  текущая директория
 	if err != nil {
 		return nil, err
 	}
@@ -64,6 +64,7 @@ func combineTextFiles(filenames []string, output string) error {
 	for _, filename := range filenames {
 		file, err := os.Open(filename)
 		if err != nil { // пропускаем файл, если нет прав на чтение
+			fmt.Printf("Ошибка чтения %s: %v\n", filename, err)
 			continue
 		}
 		defer file.Close()
@@ -85,7 +86,6 @@ func combineTextFiles(filenames []string, output string) error {
 		}
 
 		totalFiles++
-		fmt.Printf("%s - %d строк\n", filename, lineCount)
 	}
 
 	if totalFiles == 0 {
@@ -97,8 +97,9 @@ func combineTextFiles(filenames []string, output string) error {
 
 func main() {
 	fmt.Println("Задача 2")
+	const path = "."
 
-	textFiles, err := getTextFiles()
+	textFiles, err := getTextFiles(path)
 	if err != nil {
 		fmt.Printf("Ошибка: %v\n", err)
 		return
@@ -109,8 +110,9 @@ func main() {
 		return
 	}
 
+	fmt.Println("Найденные текстовые файлы:")
 	for i, file := range textFiles {
-		fmt.Printf("  %d. %s\n", i+1, file)
+		fmt.Printf("%d) %s\n", i+1, file)
 	}
 
 	outputFile := "combined.txt"
