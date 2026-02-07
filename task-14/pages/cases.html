@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.title}}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #dedddd;
+            background-color: #002448;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: #00132a;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            height: 40px;
+        }
+        
+        .nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav a {
+            text-decoration: none;
+            color: #dedddd;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav a:hover {
+            color: #ff6b35;
+        }
+        
+        .nav a.active {
+            color: #ff6b35;
+        }
+        
+        .btn-primary {
+            background: #ff6b35;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 26px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.2s;
+            cursor: pointer;
+        }
+        
+        .btn-primary:hover {
+            background: #e55a2b;
+            transform: translateY(-1px);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .page-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #ffffff;
+        }
+        
+        .cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .case-card {
+            background: #00132a;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .case-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+        }
+        
+        .case-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #333;
+        }
+        
+        .case-organization {
+            color: #ff6b35;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .case-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #ffffff;
+            line-height: 1.4;
+            margin-bottom: 0.5rem;
+        }
+        
+        .case-industry {
+            color: #888;
+            font-size: 0.875rem;
+            display: inline-block;
+            background: rgba(255, 107, 53, 0.1);
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            margin-top: 0.5rem;
+        }
+        
+        .case-content {
+            padding: 1.5rem;
+        }
+        
+        .case-description {
+            color: #b0b0b0;
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        
+        .case-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.875rem;
+            color: #888;
+        }
+        
+        .case-employees {
+            font-weight: 500;
+        }
+        
+        .case-date {
+            color: #666;
+        }
+        
+        .single-case {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #00132a;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        
+        .single-case-header {
+            padding: 2rem;
+            border-bottom: 1px solid #333;
+        }
+        
+        .single-case-organization {
+            color: #ff6b35;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .single-case-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+        
+        .single-case-meta {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        
+        .meta-label {
+            color: #888;
+            font-size: 0.875rem;
+        }
+        
+        .meta-value {
+            color: #dedddd;
+            font-weight: 500;
+        }
+        
+        .single-case-content {
+            padding: 2rem;
+        }
+        
+        .single-case-description {
+            color: #dedddd;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+        
+        .single-case-content-text {
+            color: #dedddd;
+            line-height: 1.8;
+            white-space: pre-wrap;
+        }
+        
+        .error-message {
+            text-align: center;
+            padding: 3rem;
+            background: #00132a;
+            border-radius: 16px;
+            color: #ff6b35;
+            font-size: 1.1rem;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 2rem;
+            color: #ff6b35;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .back-link:hover {
+            color: #e55a2b;
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .cases-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .single-case-title {
+                font-size: 1.5rem;
+            }
+            
+            .single-case-meta {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <img src="/static/images/ald-logo.svg" alt="ALD Logo" class="logo">
+            <nav class="nav">
+                <a href="/">Главная</a>
+                <a href="/news">Новости</a>
+                <a href="/cases" class="active">Кейсы</a>
+                <a href="/docs">Документация</a>
+                <a href="/#contact" class="btn-primary">Запросить демонстрацию</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        {{if .error}}
+            <div class="error-message">
+                {{.error}}
+                <br>
+                <a href="/cases" class="back-link">← Вернуться к кейсам</a>
+            </div>
+        {{else if .single}}
+            <div class="single-case">
+                <div class="single-case-header">
+                    <div class="single-case-organization">{{.caseItem.Organization}}</div>
+                    <h1 class="single-case-title">{{.caseItem.Title}}</h1>
+                    <div class="single-case-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Отрасль</span>
+                            <span class="meta-value">{{.caseItem.Industry}}</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Сотрудников</span>
+                            <span class="meta-value">{{.caseItem.Employees}}</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Дата внедрения</span>
+                            <span class="meta-value">{{.caseItem.ImplementedAt.Format "02.01.2006"}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="single-case-content">
+                    <div class="single-case-description">
+                        <strong>Описание:</strong> {{.caseItem.Description}}
+                    </div>
+                    {{if .caseItem.Content}}
+                        <div class="single-case-content-text">{{.caseItem.Content}}</div>
+                    {{end}}
+                </div>
+            </div>
+            <a href="/cases" class="back-link">← Вернуться к кейсам</a>
+        {{else}}
+            <h1 class="page-title">Кейсы</h1>
+            
+            {{if .cases}}
+                <div class="cases-grid">
+                    {{range .cases}}
+                        <a href="/cases/{{.ID}}" class="case-card">
+                            <div class="case-header">
+                                <div class="case-organization">{{.Organization}}</div>
+                                <h3 class="case-title">{{.Title}}</h3>
+                                {{if .Industry}}
+                                    <span class="case-industry">{{.Industry}}</span>
+                                {{end}}
+                            </div>
+                            <div class="case-content">
+                                <p class="case-description">{{.Description}}</p>
+                                <div class="case-meta">
+                                    <span class="case-employees">{{.Employees}} сотрудников</span>
+                                    <span class="case-date">{{.ImplementedAt.Format "02.01.2006"}}</span>
+                                </div>
+                            </div>
+                        </a>
+                    {{end}}
+                </div>
+            {{else}}
+                <div class="error-message">
+                    Кейсов пока нет
+                </div>
+            {{end}}
+        {{end}}
+    </main>
+</body>
+</html>

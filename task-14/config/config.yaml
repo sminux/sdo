@@ -1,0 +1,15 @@
+server:
+  port: ":8080"
+  host: "localhost"
+
+database:
+  host: "localhost"
+  port: 5432
+  user: "postgres"
+  password: "postgres"
+  dbname: "aldpro_db"
+  sslmode: "disable"
+
+paths:
+  static: "./static"
+  docs: "./docs"

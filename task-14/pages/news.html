@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.title}}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #dedddd;
+            background-color: #002448;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: #00132a;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            height: 40px;
+        }
+        
+        .nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav a {
+            text-decoration: none;
+            color: #dedddd;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav a:hover {
+            color: #ff6b35;
+        }
+        
+        .nav a.active {
+            color: #ff6b35;
+        }
+        
+        .btn-primary {
+            background: #ff6b35;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 26px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.2s;
+            cursor: pointer;
+        }
+        
+        .btn-primary:hover {
+            background: #e55a2b;
+            transform: translateY(-1px);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .page-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #ffffff;
+        }
+        
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .news-card {
+            background: #00132a;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+        }
+        
+        .news-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            /* background: linear-gradient(135deg, #ff6b35, #e55a2b); */
+            background-image: url(../static/images/cwfmfcdwlmjl2b41yavbi44vblr4u82i.png);
+        }
+        
+        .news-content {
+            padding: 1.5rem;
+        }
+        
+        .news-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+            line-height: 1.4;
+        }
+        
+        .news-excerpt {
+            color: #b0b0b0;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.875rem;
+            color: #888;
+        }
+        
+        .news-author {
+            font-weight: 500;
+        }
+        
+        .news-date {
+            color: #666;
+        }
+        
+        .single-news {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #00132a;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        
+        .single-news-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            background: url(../static/images/card-picture.png)
+        }
+        
+        .single-news-content {
+            padding: 2rem;
+        }
+        
+        .single-news-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+        
+        .single-news-text {
+            color: #dedddd;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+        
+        .single-news-meta {
+            padding-top: 1rem;
+            border-top: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            color: #888;
+        }
+        
+        .error-message {
+            text-align: center;
+            padding: 3rem;
+            background: #00132a;
+            border-radius: 16px;
+            color: #ff6b35;
+            font-size: 1.1rem;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 2rem;
+            color: #ff6b35;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .back-link:hover {
+            color: #e55a2b;
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .news-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .single-news-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <img src="/static/images/ald-logo.svg" alt="ALD Logo" class="logo">
+            <nav class="nav">
+                <a href="/">Главная</a>
+                <a href="/news" class="active">Новости</a>
+                <a href="/cases">Кейсы</a>
+                <a href="/docs">Документация</a>
+                <a href="/#contact" class="btn-primary">Запросить демонстрацию</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        {{if .error}}
+            <div class="error-message">
+                {{.error}}
+                <br>
+                <a href="/news" class="back-link">← Вернуться к новостям</a>
+            </div>
+        {{else if .single}}
+            <div class="single-news">
+                {{if .newsItem.ImageURL}}
+                    <img src="{{.newsItem.ImageURL}}" alt="{{.newsItem.Title}}" class="single-news-image">
+                {{else}}
+                    <div class="single-news-image"></div>
+                {{end}}
+                <div class="single-news-content">
+                    <h1 class="single-news-title">{{.newsItem.Title}}</h1>
+                    <div class="single-news-text">{{.newsItem.Content}}</div>
+                    <div class="single-news-meta">
+                        <span class="news-author">{{.newsItem.Author}}</span>
+                        <span class="news-date">{{.newsItem.PublishedAt.Format "02.01.2006"}}</span>
+                    </div>
+                </div>
+            </div>
+            <a href="/news" class="back-link">← Вернуться к новостям</a>
+        {{else}}
+            <h1 class="page-title">Новости</h1>
+            
+            {{if .news}}
+                <div class="news-grid">
+                    {{range .news}}
+                        <a href="/news/{{.ID}}" class="news-card">
+                            {{if .ImageURL}}
+                                <img src="{{.ImageURL}}" alt="{{.Title}}" class="news-image">
+                            {{else}}
+                                <div class="news-image"></div>
+                            {{end}}
+                            <div class="news-content">
+                                <h3 class="news-title">{{.Title}}</h3>
+                                <p class="news-excerpt">{{.Content}}</p>
+                                <div class="news-meta">
+                                    <span class="news-author">{{.Author}}</span>
+                                    <span class="news-date">{{.PublishedAt.Format "02.01.2006"}}</span>
+                                </div>
+                            </div>
+                        </a>
+                    {{end}}
+                </div>
+            {{else}}
+                <div class="error-message">
+                    Новостей пока нет
+                </div>
+            {{end}}
+        {{end}}
+    </main>
+</body>
+</html>
