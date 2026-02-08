@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"task-14/internal/models"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -17,7 +18,7 @@ type ContactForm struct {
 	FirstName    string `form:"firstName" binding:"required"`
 	Phone        string `form:"phone" binding:"required"`
 	Email        string `form:"email" binding:"required,email"`
-	Consent      bool   `form:"consent" binding:"required"`
+	Consent      string `form:"consent" binding:"required"`
 }
 
 func NewMainHandler(db *gorm.DB) *MainHandler {
@@ -36,14 +37,14 @@ func (h *MainHandler) SubmitContact(c *gin.Context) {
 	if err := c.ShouldBind(&form); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"success": false,
-			"message": "Проверьте правильность заполнения полей",
+			"message": "Пожалуйста, заполните все поля правильно",
 			"errors":  err.Error(),
 		})
 		return
 	}
 
-	// проверка на согласие персональных данных
-	if !form.Consent {
+	// Проверка согласия
+	if form.Consent != "on" {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"success": false,
 			"message": "Необходимо согласие на обработку персональных данных",
@@ -51,10 +52,32 @@ func (h *MainHandler) SubmitContact(c *gin.Context) {
 		return
 	}
 
-	// отправка письма
+	// SubmittedContact, который будет сохранен в БД
+	contact := models.SubmittedContact{
+		Organization: form.Organization,
+		LastName:     form.LastName,
+		FirstName:    form.FirstName,
+		Phone:        form.Phone,
+		Email:        form.Email,
+		Consent:      form.Consent == "on",
+		Processed:    false,
+	}
+
+	// Сохранение в БД
+	result := h.db.Create(&contact)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"success": false,
+			"message": "Ошибка при сохранении данных. Попробуйте позже.",
+			"errors":  result.Error.Error(),
+		})
+		return
+	}
+
+	// Отправка по почте
 	go func() {
-		// TODO: postfix или net/smtp
-		_ = form
+		// TODO: postfix, snmp
+		_ = contact.ID
 	}()
 
 	c.JSON(http.StatusOK, gin.H{

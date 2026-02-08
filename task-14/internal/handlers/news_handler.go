@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"net/http"
-	"task-14/models"
+	"task-14/internal/models"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"

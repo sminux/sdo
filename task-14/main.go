@@ -4,8 +4,8 @@ import (
 	"log"
 	"net/http"
 	"task-14/config"
-	"task-14/handlers"
-	"task-14/models"
+	"task-14/internal/handlers"
+	"task-14/internal/models"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -28,7 +28,7 @@ func main() {
 	}
 
 	// Автомиграция моделей
-	err = db.AutoMigrate(&models.News{}, &models.Case{})
+	err = db.AutoMigrate(&models.News{}, &models.Case{}, &models.SubmittedContact{})
 	if err != nil {
 		log.Fatal("Ошибка миграции базы данных:", err)
 	}

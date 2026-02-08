@@ -28,3 +28,15 @@ type Case struct {
 	ImplementedAt time.Time `json:"implemented_at"`
 	IsPublished   bool      `gorm:"default:true" json:"is_published"`
 }
+
+type SubmittedContact struct {
+	gorm.Model
+	Organization string    `gorm:"size:255;not null" json:"organization"`
+	LastName     string    `gorm:"size:100;not null" json:"last_name"`
+	FirstName    string    `gorm:"size:100;not null" json:"first_name"`
+	Phone        string    `gorm:"size:20;not null" json:"phone"`
+	Email        string    `gorm:"size:255;not null" json:"email"`
+	Consent      bool      `gorm:"not null" json:"consent"`
+	Processed    bool      `gorm:"default:false" json:"processed"`
+	SubmittedAt  time.Time `gorm:"autoCreateTime" json:"submitted_at"`
+}
